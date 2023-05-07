@@ -1,23 +1,40 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, {useState, useEffect} from 'react';
+import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';
 import { Provider } from 'react-redux'
 import store from './redux/store'
-
 import { Main } from './navigation/Main';
+import { User } from './navigation/User';
+import NavigationBar from './components/NavigationBar';
+import CartContent from './components/CartContent';
 
 export default function App() {
+
+  const navRef = useNavigationContainerRef()
+  
+  const [ screenName, setScreenName ] = useState('')
+  
   return (
     <>
       <StatusBar style="auto" />
-      
-      <NavigationContainer>
+      <NavigationContainer
+        ref={navRef}
+        onReady={() => {
+          setScreenName(navRef.getCurrentRoute()!.name)
+          // console.log(screenName)
+        }}
+        onStateChange={() => {
+          setScreenName(navRef.getCurrentRoute()!.name)
+          // console.log(screenName)
+
+        }}>
         <Provider store={store}>
-          <Main />
+          <User />
+          <CartContent />
+          <NavigationBar routeName={screenName}/>
         </Provider>
       </NavigationContainer>
-      <Text className='text-green-500 font-bold'>Click Me</Text>
     </>
   );
 }
