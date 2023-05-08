@@ -19,7 +19,7 @@ const CartItemBar = ({_id, price, name, quantity}) => {
 	}
 	return (
     <View className='flex-row items-center justify-between text-gray-500 font-bold'>
-			<View className={`bg-[${colors.primary}] h-10 w-10 rounded`}>
+			<View className={`bg-[#fab005] h-10 w-10 rounded`}>
 				{/* Image goes here */}
 			</View>
 			<View className="">

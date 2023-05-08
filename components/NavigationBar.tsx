@@ -27,7 +27,7 @@ const NavigationBar = ({routeName}: NavigationBarProps) => {
   const wishList = useAppSelector(state => state.wishlist.items)
   const keyboard = useKeyboard()
  
-    if((routeName === "Onboarding") || keyboard.keyboardShown) return null
+    if((routeName === "Onboarding") || (routeName === "Signup") || (routeName === "Signin") || keyboard.keyboardShown) return null
 
     const handler = (text = "Home") => {
       setLabel(text)
@@ -54,7 +54,7 @@ const NavigationBar = ({routeName}: NavigationBarProps) => {
   )
   
   return (
-    <View className={`bg-[${colors.primary}] flex-row px-6 py-2 justify-between`}>
+    <View className={`bg-[#fab005] flex-row px-6 py-2 justify-between`}>
       {navButton(HomeIcon, 'Home')}
       {navButtonWithCounter(HeartIcon, 'Wishlist', wishList.length)}
       {navButtonWithCounter(ShoppingCartIcon, 'Cart', cartTotal ? cartTotal : 0 )}

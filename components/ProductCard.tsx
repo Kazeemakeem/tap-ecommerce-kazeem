@@ -69,7 +69,7 @@ const ProductCard = ({ _id, name, description, discount, price, rating }: Produc
   return (
     <TouchableOpacity className='flex-row space-x-4 py-4 border-b-2 border-gray-300'>
 			<View className='w-36 h-48 rounded-lg border-2 border-gray-200 flex items-center justify-center'>
-				<View className={`w-24 h-24 bg-[${colors.primary}] rounded-full`}>
+				<View className={`w-24 h-24 bg-[#fab005] rounded-full`}>
 				</View>
 			</View>
 			<View className='flex justify-between pb-8 pt-2'>
@@ -104,7 +104,7 @@ const ProductCard = ({ _id, name, description, discount, price, rating }: Produc
 					</TouchableOpacity>
 				</View>
 				<View className='absolute bottom-0 left-0'>
-					<ActionButton text={"ADD TO CART"} onPressHandler={handleAddToCart}/>
+					<ActionButton text={"ADD TO CART"} onPressHandler={handleAddToCart} isWide={false}/>
 				</View>
 			</View>
 			<TouchableOpacity className="absolute -left-4 top-4 w-10 h-10 flex items-center justify-center rounded-br-xl rounded-tl-xl bg-gray-400"

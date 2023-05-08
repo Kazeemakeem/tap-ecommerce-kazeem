@@ -47,7 +47,7 @@ const ProductsScreen = () => {
   return (
     <SafeAreaView className='px-3'>
       <View className='flex items-end justify-center mb-4'>
-        <ActionButton text={getAllProducts ? name.toUpperCase() : "VIEW ALL"} onPressHandler={viewAllHandler} />
+        <ActionButton text={getAllProducts ? name.toUpperCase() : "VIEW ALL"} onPressHandler={viewAllHandler} isWide={false} />
       </View>
        {mapArr.length ? 
         <ScrollView>
