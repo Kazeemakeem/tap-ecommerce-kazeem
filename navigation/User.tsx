@@ -1,18 +1,22 @@
 import React, {useState, useEffect} from 'react';
 // import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStackNavigator } from '@react-navigation/stack';
-import { List} from '../screens/List';
 import { HomeScreen} from '../screens/HomeScreen';
 import  ProductsScreen from '../screens/ProductsScreen';
 import  WishlistScreen from '../screens/WishlistScreen';
-import { TextDemo, ButtonDemo, FormDemo, TailwindDemo } from '../screens/Demos';
 import OnboardingSwipeScreen from '../screens/OnboardingScreen';
+import SignupScreen from '../screens/SignupScreen';
+import SigninScreen from '../screens/SigninScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type UserStackParams = {
   Home: undefined;
   Onboarding: undefined;
   Products: undefined;
+  Wishlist: undefined;
+  Signup: undefined;
+  Signin: undefined;
+
 };
 
 const UserStack = createStackNavigator();
@@ -39,6 +43,16 @@ export const User = () => {
       name="Onboarding"
         component={OnboardingSwipeScreen}
         options={{headerShown: false}} />}
+      <UserStack.Screen
+        name="Signup"
+        component={SignupScreen}
+        options={{ headerShown: false }}
+      />
+      <UserStack.Screen
+        name="Signin"
+        component={SigninScreen}
+        options={{ headerShown: false }}
+      />
       <UserStack.Screen
         name="Home"
         component={HomeScreen}

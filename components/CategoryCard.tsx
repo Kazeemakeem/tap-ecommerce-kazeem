@@ -27,7 +27,7 @@ const CategoryCard = ({ _id, name, description }: CategoryCardsProps) => {
         <Text className="text-xs px-4 py-2">{name}</Text>
       </View>
       <View
-        className={`h-24 w-24 bg-[${colors.primary}] p-4 rounded-full`}>
+        className={`h-24 w-24 bg-[#fab005] p-4 rounded-full`}>
         {/* Category image should be here if available on the endpoint */}
       </View>
       <View>

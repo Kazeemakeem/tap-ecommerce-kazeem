@@ -17,7 +17,7 @@ const OnboardingSwipeScreen = () => {
   const boardButton = (text: string, slideIndex: number) => (
 		<TouchableOpacity
     className={`w-full px-4 absolute bottom-2 flex flex-row ${slideIndex === 0 ? "justify-start" : slideIndex === 2 ? "justify-end" : ""}`} 
-      onPress={() => navigation.replace("Home")}
+      onPress={() => navigation.replace("Signin")}
       ><View className="bg-[#00CCBB] flex justify-center items-center rounded-lg">
 			  <Text className="text-lg px-4 py-1 text-white">{text}</Text>
       </View>
