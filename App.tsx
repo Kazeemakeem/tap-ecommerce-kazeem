@@ -7,7 +7,7 @@ import store from './redux/store'
 import { Main } from './navigation/Main';
 import { User } from './navigation/User';
 import NavigationBar from './components/NavigationBar';
-import CartContent from './components/CartContent';
+import CartContent from './components/CartContent';import FlashMessage, {showMessage, hideMessage} from "react-native-flash-message";
 
 export default function App() {
 
@@ -33,6 +33,7 @@ export default function App() {
           <User />
           <CartContent />
           <NavigationBar routeName={screenName}/>
+          <FlashMessage position="top" floating={true} className="mt-20"/>
         </Provider>
       </NavigationContainer>
     </>

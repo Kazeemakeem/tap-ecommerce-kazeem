@@ -2,7 +2,19 @@ import React from 'react'
 import {TextInput} from 'react-native'
 import colors from '../constants/colors'
 
-const DataTextInput = ({fieldName, stringedName, placeholderText, secureInput, handleChange}) => {
+
+export type handleChangeType = (stringedName: string) => (fieldName : string) => void
+
+type DataTextInputProps = {
+  fieldName: string;
+   stringedName: string;
+   placeholderText: string;
+   secureInput: boolean | undefined;
+   handleChange: handleChangeType;
+
+}
+
+const DataTextInput = ({ fieldName, stringedName, placeholderText, secureInput, handleChange }: DataTextInputProps) => {
   return (
     <TextInput
       onChangeText={handleChange(stringedName)}

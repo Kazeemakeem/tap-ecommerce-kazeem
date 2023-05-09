@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react';
-// import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStackNavigator } from '@react-navigation/stack';
 import { HomeScreen} from '../screens/HomeScreen';
 import  ProductsScreen from '../screens/ProductsScreen';
@@ -16,12 +15,12 @@ export type UserStackParams = {
   Wishlist: undefined;
   Signup: undefined;
   Signin: undefined;
-
 };
 
 const UserStack = createStackNavigator();
 
 export const User = () => {
+  
   const [firstLaunch, setFirstLaunch] = useState<null|Boolean>(null);
     
   useEffect(() => {

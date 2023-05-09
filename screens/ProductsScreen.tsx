@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { useRoute, useNavigation } from '@react-navigation/native'
-import ProductCard, { ProductCardProp } from '../components/ProductCard'
+import ProductCard from '../components/ProductCard'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { StyleSheet, FlatList, ScrollView, View, Text } from 'react-native';
+import { ScrollView, View, Text } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack/';
 import { UserStackParams } from '../navigation/User';
 import useAxios from '../util/axios';
 import { ActionButton } from '../components/Button';
-
-
 
 const ProductsScreen = () => {
 
@@ -34,7 +32,6 @@ const ProductsScreen = () => {
     const route = useRoute<any>()
     const { params } = route
     const { _id, name } = params
-
     //@ts-ignore
     const categoryProducts = data.filter(item => item.categoryID === _id)
     const mapArr = getAllProducts ? data : categoryProducts

@@ -1,24 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { TouchableOpacity, View, Text, TextInput, Image, Alert } from 'react-native'
+import { TouchableOpacity, View, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { useAppDispatch } from '../redux/storeHooks'
 import { InformationCircleIcon, XMarkIcon } from 'react-native-heroicons/outline'
-import { isAuth, signup } from '../actions/auth'
 import { getItem } from '../actions/auth'
-import {showLoading, showMessage, showError } from '../util/auth'
 import { ActionButton } from './Button'
 import colors from '../constants/colors'
 import { StackNavigationProp } from '@react-navigation/stack/';
 import { UserStackParams } from '../navigation/User'
-import  DataTextInput  from './DataTextInput'
-import useAxios from '../util/axios'
+import  DataTextInput, { handleChangeType }  from './DataTextInput'
 import axios from 'axios';
+import { createCloudCart } from '../util/cart'
 
+axios.defaults.baseURL = 'https://lab-ecom-api-4c56x6bkca-uc.a.run.app/api/v1';
 
 const SignUp = () => {
-
-  const dispatch = useAppDispatch()
-
+  
 	const navigation = useNavigation<StackNavigationProp<UserStackParams>>()
   
   const [ values, setValues ] = useState(
@@ -39,38 +36,75 @@ const SignUp = () => {
     
   useEffect(() => {
     setValues({ ...values, username: '', password: '', name: '', email: ''})
-    getItem('Tap')
+    getItem('tap')
     .then(res => {
       res && navigation.navigate("Home")
     })
     .catch(err => console.log(err))
   }, [])
-    
+
   const handleSubmit = () => {
      //@ts-ignore
-     setValues({...values, loading: true, error: false})
-     const user = { name, email, username, password } 
-     axios.post('./user', {
-       method: 'POST',
-       headers: ({
-         Accept: 'application/json',
-         'Content-Type': 'application/json'
-       }),
-       data: user
-     })
-     .then((res) => {
-       setValues({ ...values, name: '', email: '', username: '', password: '', error: '', loading: false, message: res.data.success.message, showForm: false })
-          navigation.navigate('Signin')
-       })
-     .catch((err) => {
-       console.log(err.response.data)
-     })
-   }
+    setValues({...values, loading: true, error: false})
+    const user = { name, email, username, password } 
+    axios.post('./user', {
+      method: 'POST',
+      headers: ({
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      }),
+      data: user
+    })
+    .then((res) => {
+      setValues({ ...values, loading: false})
+      if(res.data.success.message === 'User Created'){
+        setValues({ ...values, name: '', email: '', username: '', password: '', error: '', message: res.data.success.message, showForm: false })
+        createCloudCart()
+      }else {
+        setValues({ ...values, error: res.data.success.message})
+      }
+      })
+    .catch((err) => {
+      setValues({ ...values, loading: false,  error: err.response.data.error.message})
+    })
+  }
   
-  const handleChange = name => value => {
+  const handleChange: handleChangeType = name => value => {
     //@ts-ignore
     setValues({ ...values, error: false, [name]: value })
   }
+
+  const showError = () => (error ? <View className="w-full text-2xl bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded absolute top-8 z-10">
+    <Text className="font-bold">Sorry!</Text>
+    <Text className="">{error}</Text>
+    <TouchableOpacity 
+    //@ts-ignore
+    onPress={() => setValues({...values, loading: false, error: false})}
+    className="absolute top-0 bottom-0 right-0 px-4 py-3">
+      <XMarkIcon size={24} color="red" className="mr-4"/>
+    </TouchableOpacity>
+  </View> : '')
+
+  const showMessage = () => ( message ? <View className="w-full text-2xl bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative absolute top-8 z-10">
+    <Text className="font-bold">Success! </Text>
+    <Text className="">{message}</Text>
+    <TouchableOpacity 
+    onPress={() => navigation.replace('Signin')}
+    className="absolute top-0 bottom-0 right-0 px-4 py-3">
+      <XMarkIcon size={24} color="green" className="mr-4"/>
+    </TouchableOpacity>
+  </View> : '')
+
+  const showLoading = () => (loading ? <View className="w-full bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 text-2xl px-4 py-3 shadow-md absolute top-8 z-10">
+    <View className="flex-row items-center">
+      <View className="py-1 flex items-center justify-center">
+        <InformationCircleIcon size={24} color="teal" className="mr-4"/>
+      </View>
+      <View>
+        <Text className="font-bold">Loading...</Text>
+      </View>
+    </View>
+  </View> : '')
 
   const signUpForm = () => {
     return (
@@ -110,9 +144,9 @@ const SignUp = () => {
   }
   return (
     <View className='flex items-center relative'>
-      {showLoading(loading)}
-      {showMessage(values, () => navigation.navigate('Signin'))}
-      {showError(values, setValues)}
+      {showLoading()}
+      {showMessage()}
+      {showError()}
       {showForm && signUpForm()}
     </View>
   )
