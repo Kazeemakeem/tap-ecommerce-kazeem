@@ -6,8 +6,7 @@ import { emptyCart, removeFromCart, toggleCart, updateCartTotal } from '../redux
 import CurrencyBar from './CurrencyBar'
 import { useNavigation } from '@react-navigation/native'
 import CartItemBar from './CartItemBar'
-
-
+import { ActionButton } from './Button'
 
 const CartContent = () => {
   
@@ -43,18 +42,14 @@ const CartContent = () => {
           </ScrollView>
           <View className="pt-2 mt-2 mx-4 w-full px-6">
             <CurrencyBar description="Subtotal" value={totalCartCost} emphasis={false} />
-            <CurrencyBar description="Delivery Fee" value={1000} emphasis={false}/>
-            <CurrencyBar description="Order Total" value={totalCartCost + 1000} emphasis={true}/>
+            <CurrencyBar description="Delivery Fee" value={10} emphasis={false}/>
+            <CurrencyBar description="Order Total" value={totalCartCost + 10} emphasis={true}/>
           </View>
         </> : <Text className='text-gray-500 text-xl font-bold mt-4 text-center'>Your cart is empty.</Text>}
       </View>
       {cartTotal && items.length ? <View className='px-4 w-full mt-auto pt-4 rounded-2xl flex-row justify-end'>
-          <TouchableOpacity 
-            onPress={handlePlaceOrder}
-            className="w-24 bg-[#00CCBB] rounded-lg flex items-center justify-center border-2 border-[#00CCBB]">
-            <Text className="p-1 text-lg font-bold text-white">Place order</Text>
-          </TouchableOpacity>
-        </View> : null}
+        <ActionButton text={"PLACE ORDER"} onPressHandler={handlePlaceOrder} isWide={false}/>
+      </View> : null}
     </View>}
    </View>
   )

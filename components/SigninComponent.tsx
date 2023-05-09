@@ -1,24 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { TouchableOpacity, View, Text, TextInput, Image, Alert } from 'react-native'
+import { TouchableOpacity, View, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
-import { useAppDispatch } from '../redux/storeHooks'
-import { authenticate, signin } from '../actions/auth'
+import { authenticate } from '../actions/auth'
 import { getItem } from '../actions/auth'
-import {showLoading, showMessage, showError } from '../util/auth'
 import { ActionButton } from './Button'
-import colors from '../constants/colors'
 import { StackNavigationProp } from '@react-navigation/stack/';
 import { UserStackParams } from '../navigation/User'
-import  DataTextInput  from './DataTextInput'
-import { axiosAuth } from '../util/axios'
+import  DataTextInput, { handleChangeType }  from './DataTextInput'
 import axios from 'axios';
-
-axios.defaults.baseURL = 'https://lab-ecom-api-4c56x6bkca-uc.a.run.app/api/v1';
-
+import { InformationCircleIcon, XMarkIcon } from 'react-native-heroicons/outline'
 
 const SignUp = () => {
-
-  const dispatch = useAppDispatch()
 	const navigation = useNavigation<StackNavigationProp<UserStackParams>>()
   const [ values, setValues ] = useState(
     {
@@ -32,9 +24,9 @@ const SignUp = () => {
   )
   const {username, password, error, loading, message, showForm} = values
 
-  useEffect(() => {
+  useEffect( () => {
     setValues({ ...values, username: '', password: ''})
-    getItem('Tap')
+    getItem('tap')
     .then(res => {
       res && navigation.navigate("Home")
     })
@@ -55,21 +47,57 @@ const SignUp = () => {
       data: user
     })
     .then((res) => {
+      if(res.data.content.data.token){
         authenticate(res.data.content.data, () => {
-        // dispatch(updateUser(data.user))
         setValues({ ...values, username: '', password: '', message: res.data.success.message, error: ''})
-        navigation.navigate("Home")
+        navigation.replace("Home")
         })
+      }else {
+        setValues({ ...values, error: res.data.success.message, loading: false})
+      }
       })
     .catch((err) => {
-      console.log(err.response.data)
+      setValues({ ...values, loading: false,  error: err.response.data.error.message})
     })
   }
 
-  const handleChange = name => value => {
+  const handleChange : handleChangeType = name => value => {
     //@ts-ignore
     setValues({ ...values, error: false, [name]: value })
   }
+
+  const showError = () => (error ? <View className="w-full text-2xl bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded absolute top-8 z-10">
+    <Text className="font-bold">Sorry! </Text>
+    <Text className="">{error}</Text>
+    <TouchableOpacity 
+    //@ts-ignore
+    onPress={() => setValues({...values, loading: false, error: false})}
+    className="absolute top-0 bottom-0 right-0 px-4 py-3">
+      <XMarkIcon size={24} color="red" className="mr-4"/>
+    </TouchableOpacity>
+  </View> : '')
+
+  const showMessage = () => ( message ? <View className="w-full text-2xl bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative absolute top-8 z-10">
+    <Text className="font-bold">Success! </Text>
+    <Text className="">{message}</Text>
+    <TouchableOpacity 
+    onPress={() => navigation.navigate('Signin')}
+    className="absolute top-0 bottom-0 right-0 px-4 py-3">
+      <XMarkIcon size={24} color="green" className="mr-4"/>
+    </TouchableOpacity>
+  </View> : '')
+
+  const showLoading = () => (loading ? <View className="w-full bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 text-2xl px-4 py-3 shadow-md absolute top-8 z-10">
+    <View className="flex-row items-center">
+      <View className="py-1 flex items-center justify-center">
+        <InformationCircleIcon size={24} color="teal" className="mr-4"/>
+      </View>
+      <View>
+        <Text className="font-bold">Loading...</Text>
+      </View>
+    </View>
+  </View> : '')
+
 
   const signInForm = () => {
     return (
@@ -107,9 +135,9 @@ const SignUp = () => {
   }
   return (
     <View className='flex items-center relative'>
-      {showLoading(loading)}
-      {showMessage(values, null)}
-      {showError(values, setValues)}
+      {showLoading()}
+      {showMessage()}
+      {showError()}
       {showForm && signInForm()}
     </View>
   )

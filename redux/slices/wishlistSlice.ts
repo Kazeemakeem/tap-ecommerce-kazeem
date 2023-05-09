@@ -29,10 +29,6 @@ const initialState: initStateType = {
       removeFromWishlist: (state, action) => {
         state.items = state.items.filter(item => item._id !== action.payload)
       },
-
-      // toggleWishlist: (state, action) => {
-      //   state.openWishlist = action.payload
-      // }
     }
   })
 

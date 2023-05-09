@@ -1,14 +1,13 @@
-import { getFocusedRouteNameFromRoute, useNavigation, useRoute } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
-import { HeartIcon, HomeIcon, ListBulletIcon, UserIcon } from 'react-native-heroicons/outline'
+import { HeartIcon, HomeIcon, UserIcon } from 'react-native-heroicons/outline'
 import { ShoppingCartIcon } from 'react-native-heroicons/outline'
 import { useAppDispatch, useAppSelector } from '../redux/storeHooks'
-// import { isAuth } from '../actions/auth'
-import { toggleCart } from '../redux/slices/cartSlice'
+import { getServerCart, toggleCart } from '../redux/slices/cartSlice'
 import { useKeyboard } from '@react-native-community/hooks'
-import { StackNavigationProp } from '@react-navigation/stack/';
-import { UserStackParams } from '../navigation/User';
+import { StackNavigationProp } from '@react-navigation/stack/'
+import { UserStackParams } from '../navigation/User'
 import colors from '../constants/colors'
 
 export type NavigationBarProps = {
@@ -29,12 +28,18 @@ const NavigationBar = ({routeName}: NavigationBarProps) => {
  
     if((routeName === "Onboarding") || (routeName === "Signup") || (routeName === "Signin") || keyboard.keyboardShown) return null
 
-    const handler = (text = "Home") => {
-      setLabel(text)
-      text !== 'Cart' ? navigation.navigate(text) : dispatch(toggleCart(!cartOpen))
+    const cartLoader = () => {
+      dispatch(toggleCart(!cartOpen))
+      // dispatch(getServerCart())
     }
 
-    const navButton = (Icon, text) => (
+    const handler = (text = "Home") => {
+      setLabel(text)
+      //@ts-ignore
+      text !== 'Cart' ? navigation.navigate(text) : cartLoader()
+    }
+
+    const navButton = (Icon: any, text: string) => (
       <TouchableOpacity 
         onPress={() => { handler(text) }}
         className="flex justify-center items-center relative">
@@ -43,7 +48,7 @@ const NavigationBar = ({routeName}: NavigationBarProps) => {
       </TouchableOpacity>
     ) 
 
-  const navButtonWithCounter = ( Icon, text, count) => (
+  const navButtonWithCounter = ( Icon: any, text: string, count: number) => (
     <TouchableOpacity 
       onPress={() => handler(text)}
       className="flex justify-center items-center relative">

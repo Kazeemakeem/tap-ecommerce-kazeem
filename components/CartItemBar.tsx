@@ -1,13 +1,18 @@
 
-import { Button, ScrollView, Text, TouchableOpacity, View, Image } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 import { TrashIcon } from 'react-native-heroicons/outline'
-import { useAppDispatch, useAppSelector } from '../redux/storeHooks'
+import { useAppDispatch } from '../redux/storeHooks'
 import { removeFromCart, updateCartTotal } from '../redux/slices/cartSlice'
 import colors from '../constants/colors'
 import { formatCurrency } from "react-native-format-currency";
 
-
-const CartItemBar = ({_id, price, name, quantity}) => {
+type CartItemProps = {
+	_id: string;
+	price: number;
+	name: string;
+	quantity: number;
+}
+const CartItemBar = ({ _id, price, name, quantity }: CartItemProps) => {
 	
 	const dispatch = useAppDispatch()
 	const [valueFormattedWithSymbol] = formatCurrency({ amount: price, code: "USD"})

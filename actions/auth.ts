@@ -1,28 +1,32 @@
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import fetch from 'isomorphic-fetch'
 import * as SecureStore from "expo-secure-store"
-import { API } from '../constants/baseUrls'
-import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-
-export async function setItem(key, value) {
-  SecureStore.setItemAsync(key, value)
-    .then(res => {
-      //
-    })
-    .catch(err => console.log(err))
+type dataType = {
+  token: string
 }
 
-export async function getItem(key) {
-  let result = await SecureStore.getItemAsync(key);
-  if(result) {
-    return result;
-  } 
-  return false
+export const setItem = async (key: string, value: string) => {
+  try {
+    await AsyncStorage.setItem(key, value)
+  } catch (e) {
+    console.log(e)
+  }
 }
 
-export const authenticate = (data, next) => {
-  setItem('Tap', data.token)
+export const getItem = async (key: string) => {
+  try {
+    const value = await AsyncStorage.getItem(key)
+    if(value !== null) {
+      return value
+    }else{
+      return false
+    }
+  } catch(e) {
+    console.log(e)
+  }
+}
+
+export const authenticate = (data: dataType, next: () => void) => {
+  setItem('tap', data.token)
   next()
 }

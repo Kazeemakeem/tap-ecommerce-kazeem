@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { ScrollView, Text, View } from 'react-native'
-import { useAppDispatch, useAppSelector } from '../redux/storeHooks'
+import React from 'react'
+import { ScrollView, View } from 'react-native'
+import { useAppSelector } from '../redux/storeHooks'
 import ProductCard from '../components/ProductCard'
-import useAxios from '../util/axios'
 
 const WishlistScreen = () => {
 

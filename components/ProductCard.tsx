@@ -1,18 +1,19 @@
 import { useEffect, useState } from 'react'
-import { Button, Image, Text, TouchableOpacity, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 import { MinusCircleIcon, PlusCircleIcon } from 'react-native-heroicons/solid'
 import { HeartIcon as HeartOutline } from 'react-native-heroicons/outline'
 import { HeartIcon as HeartSolid } from 'react-native-heroicons/solid'
-import { useRoute } from '@react-navigation/native'
-import FlashMessage, {showMessage, hideMessage} from "react-native-flash-message";
+import { showMessage } from "react-native-flash-message"
 import colors from '../constants/colors'
-import { NumericFormat } from 'react-number-format'
 import { AirbnbRating } from 'react-native-ratings'
-import { formatCurrency } from "react-native-format-currency";
+import { formatCurrency } from "react-native-format-currency"
 import { ActionButton } from './Button'
 import { addToWishlist, removeFromWishlist } from '../redux/slices/wishlistSlice'
 import { useAppDispatch, useAppSelector } from '../redux/storeHooks'
 import { addToCart } from '../redux/slices/cartSlice'
+import uuid from 'react-native-uuid'
+import axios from 'axios';
+import { getItem } from '../actions/auth'
 
 
 export type ProductCardProp = {
@@ -24,20 +25,44 @@ export type ProductCardProp = {
 	rating: number;
 }
 const ProductCard = ({ _id, name, description, discount, price, rating }: ProductCardProp) => {
-	// description, price, image, discount, rating
-	// const wishList = useAppSelector(state => state.wishlist.items)
 	const wishListIds = useAppSelector(state => state.wishlist.items).map(item => item._id)
-	// const items = Array.from(Object.values(useAppSelector(state => state.cart.items)))
 	const dispatch = useAppDispatch()
-	// const [ isPressed, setIsPressed ] = useState(false)
-	// const [ quantity, setQuantity ] = useState(0)
 	const [ wishlisted, setWishlisted ] = useState(false)
 	const [ quantity, setQuantity ] = useState(0)
+	const currentCartProducts = useAppSelector(state => state.cart.items)
+
 	
 
 	useEffect(() => {
 		wishListIds.includes(_id) ? setWishlisted(true) : setWishlisted(false)
 	}, [wishListIds])
+
+	const updatedCartData = {
+		userID: uuid.v4(),
+		products: currentCartProducts
+	}
+
+	const updateCloudCart = async () => {
+		return axios.put('user/cart', {
+			method: 'PUT',
+			headers: ({
+				'Authorization': `Bearer ${getItem('tap')}`,
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			}),
+			data: updatedCartData
+		})
+		.then((res) => {
+			if(res.data.success.message === 'Cart Updated'){
+			console.log(res.data.success.message)
+			}else{
+				console.log(res.data.success.message)
+			}
+		})
+		.catch((err) => {
+			console.log(err.response.message)
+		})
+	}
 
 	const handleAddToCart = () => {
 		const newItem = {
@@ -55,12 +80,11 @@ const ProductCard = ({ _id, name, description, discount, price, rating }: Produc
 			description: "Item added to cart",
 			type: "success",
 		});
+		updateCloudCart()
 	}
 
 	const wishlistHandler = () => {
-		// setWishlisted(!wishlisted)
 		!wishlisted && dispatch(addToWishlist({ _id, name, description, discount, price, rating }))
-		// console.log(wishListIds)
 		wishlisted && dispatch(removeFromWishlist(_id))
 	}
 

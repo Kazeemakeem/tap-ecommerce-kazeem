@@ -3,15 +3,12 @@ import wishListReducer from './slices/wishlistSlice'
 import routeReducer from './slices/routeSlice'
 import cartReducer from './slices/cartSlice'
 
-
 const store = configureStore({
 	reducer: {
 		wishlist: wishListReducer,
 		route: routeReducer,
 		cart: cartReducer,
 	},
-
-	// middleware: (getDefaultMiddleware) => getDefaultMiddleware()
 
 })
 

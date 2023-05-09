@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import { StyleSheet, FlatList, View, Text, TextInput,ScrollView } from 'react-native';
+import { View, Text, TextInput, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'
 import CategoryCard from '../components/CategoryCard';
 import useAxios from '../util/axios';
-import SearchComponent from '../components/SearchComponent';
 import { MagnifyingGlassIcon } from 'react-native-heroicons/outline'
 
 
@@ -54,7 +53,7 @@ const handleSubmit = () => {
       </View>
         {!showSearchResult ?
         <ScrollView>
-          <View className='flex-row flex-wrap justify-between px-3'>
+          <View className='flex-row flex-wrap justify-between px-3 space-y-2'>
             { response && data.map(item => (
               //@ts-ignore
               <CategoryCard key={item._id} _id={item._id} name={item.name} description={item.description}/>
