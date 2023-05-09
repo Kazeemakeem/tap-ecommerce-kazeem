@@ -32,8 +32,7 @@ const SignUp = () => {
   )
     
   const {name, email, username, password, loading, error, message, showForm} = values
-    
-    
+  
   useEffect(() => {
     setValues({ ...values, username: '', password: '', name: '', email: ''})
     getItem('tap')
@@ -57,15 +56,17 @@ const SignUp = () => {
     })
     .then((res) => {
       setValues({ ...values, loading: false})
-      if(res.data.success.message === 'User Created'){
-        setValues({ ...values, name: '', email: '', username: '', password: '', error: '', message: res.data.success.message, showForm: false })
+      const { data: { success: { message }} } = res
+      if( message === 'User Created'){
+        setValues({ ...values, name: '', email: '', username: '', password: '', error: '', message, showForm: false })
         createCloudCart()
       }else {
-        setValues({ ...values, error: res.data.success.message})
+        setValues({ ...values, error: message})
       }
       })
     .catch((err) => {
-      setValues({ ...values, loading: false,  error: err.response.data.error.message})
+      const { response: { data: { error: { message } } } } = err
+      setValues({ ...values, loading: false,  error: message})
     })
   }
   

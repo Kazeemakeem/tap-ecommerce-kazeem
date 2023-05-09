@@ -1,19 +1,29 @@
 import * as SecureStore from "expo-secure-store"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type dataType = {
   token: string
 }
 
-export async function setItem(key: string, value: string) {
-  await SecureStore.setItemAsync(key, value)
+export const setItem = async (key: string, value: string) => {
+  try {
+    await AsyncStorage.setItem(key, value)
+  } catch (e) {
+    console.log(e)
+  }
 }
 
-export async function getItem(key: string) {
-  const result = await SecureStore.getItemAsync(key);
-  if(result) {
-    return result
-  } 
-  return false
+export const getItem = async (key: string) => {
+  try {
+    const value = await AsyncStorage.getItem(key)
+    if(value !== null) {
+      return value
+    }else{
+      return false
+    }
+  } catch(e) {
+    console.log(e)
+  }
 }
 
 export const authenticate = (data: dataType, next: () => void) => {

@@ -4,11 +4,8 @@ import { getItem } from '../actions/auth'
 import { useAppDispatch, useAppSelector } from '../redux/storeHooks'
 
 
-
 // the data from the signup endpoint does not return any userID for reference
 // The userIDs created here are just to mock the functionality
-
-
 const newCartData = {
   userID: uuid.v4(),
   products: []

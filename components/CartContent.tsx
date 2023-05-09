@@ -9,7 +9,7 @@ import CartItemBar from './CartItemBar'
 import { ActionButton } from './Button'
 
 const CartContent = () => {
-  const cart = useAppSelector(state => state.cart)
+  
 	const items = useAppSelector(state => state.cart.items)
   const cartTotal = eval(items.map(item => item['quantity']).join("+"))
   const totalCartCost = eval(items.map(item => (item['quantity']*item['totalPrice'])).join("+"))
@@ -32,7 +32,8 @@ const CartContent = () => {
         {cartTotal && items.length ?
         <>
           <ScrollView className="flex mt-2 space-y-4 border-b-2 border-gray-200 pb-4 w-full px-6">
-            {items.map(item => (
+            {
+            items.map(item => (
               <View key={item.productID} className="">
                 <CartItemBar _id={item.productID} price={item.totalPrice} name={item.name} quantity={item.quantity}/>
               </View>

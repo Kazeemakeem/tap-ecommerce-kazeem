@@ -51,20 +51,6 @@ export const getServerCart = createAsyncThunk('cart/getServerCart', async () => 
   })
 })
 
-// export const updateServerCart = createAsyncThunk('cart/updateServerCart', async (headers, data) => {
-//   return axios.put('user/cart', {
-//     method: 'PUT',
-//     headers,
-//     data
-//   })
-//   .then(res => {
-//     //
-//   })
-//   .catch(err => {
-//     console.log(err.response.message)
-//   })
-// })
-
  const cartSlice = createSlice({
     name: 'cart',
     initialState,
@@ -74,7 +60,7 @@ export const getServerCart = createAsyncThunk('cart/getServerCart', async () => 
       },
 
       addToCart: (state, action:PayloadAction<ShoppingCartItemType>) => {
-         state.items = state.items.concat(action.payload)
+        state.items = state.items.concat(action.payload)
       },
 
       removeFromCart: (state, action) => {

@@ -4,7 +4,6 @@ import { Text, TouchableOpacity, View } from 'react-native'
 import { HeartIcon, HomeIcon, UserIcon } from 'react-native-heroicons/outline'
 import { ShoppingCartIcon } from 'react-native-heroicons/outline'
 import { useAppDispatch, useAppSelector } from '../redux/storeHooks'
-// import { isAuth } from '../actions/auth'
 import { getServerCart, toggleCart } from '../redux/slices/cartSlice'
 import { useKeyboard } from '@react-native-community/hooks'
 import { StackNavigationProp } from '@react-navigation/stack/'
@@ -31,7 +30,7 @@ const NavigationBar = ({routeName}: NavigationBarProps) => {
 
     const cartLoader = () => {
       dispatch(toggleCart(!cartOpen))
-      dispatch(getServerCart())
+      // dispatch(getServerCart())
     }
 
     const handler = (text = "Home") => {

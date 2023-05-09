@@ -24,7 +24,7 @@ const SignUp = () => {
   )
   const {username, password, error, loading, message, showForm} = values
 
-  useEffect(() => {
+  useEffect( () => {
     setValues({ ...values, username: '', password: ''})
     getItem('tap')
     .then(res => {
