@@ -9,8 +9,8 @@ import CartItemBar from './CartItemBar'
 import { ActionButton } from './Button'
 
 const CartContent = () => {
-  
-	const items = useAppSelector(state => state.cart.items)
+  const cart = useAppSelector(state => state.cart.items)
+	const items = Array.from(Object.values(cart))
   const cartTotal = eval(items.map(item => item['quantity']).join("+"))
   const totalCartCost = eval(items.map(item => (item['quantity']*item['totalPrice'])).join("+"))
   const cartOpen = useAppSelector(state => state.cart.openCart)

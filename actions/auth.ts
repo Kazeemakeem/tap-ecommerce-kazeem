@@ -26,7 +26,7 @@ export const getItem = async (key: string) => {
   }
 }
 
-export const authenticate = (data: dataType, next: () => void) => {
-  setItem('tap', data.token)
+export const authenticate = async (data: dataType, next: () => void) => {
+  await setItem('tap', data.token)
   next()
 }

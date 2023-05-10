@@ -12,27 +12,33 @@ type ShoppingCartItemType = {
 
 type InitStateType = {
   userID: string;
-  items: ShoppingCartItemType[];
+  items: itemObj
   openCart: Boolean;
   cartTotal: number;
   loading: 'idle' | 'pending';
   error: string;
 }
 
+type itemObj = {
+  [key: string]: ShoppingCartItemType
+}
+
 const initialState : InitStateType = {
   userID: '',
-  items: [],
+  items: {},
   openCart: false,
   cartTotal: 0,
   loading: 'idle',
   error: ""
 }
 
+const token = getItem('tap').then(res => res).catch(err => console.log(err))
+
 export const getServerCart = createAsyncThunk('cart/getServerCart', async () => {
   return axios.get('user/cart', {
     method: 'GET',
     headers: ({
-      'Authorization': `Bearer ${getItem('tap')}`,
+      'Authorization': `Bearer ${token}`,
       Accept: 'application/json',
       'Content-Type': 'application/json'
     }),
@@ -60,11 +66,17 @@ export const getServerCart = createAsyncThunk('cart/getServerCart', async () => 
       },
 
       addToCart: (state, action:PayloadAction<ShoppingCartItemType>) => {
-        state.items = state.items.concat(action.payload)
+        const newId = action.payload.productID
+        const qty = action.payload.quantity
+        if(state['items'].hasOwnProperty(newId)){
+          state['items'][newId]['quantity'] = state['items'][newId]['quantity'] + qty
+        }else{
+          state['items'][newId] = action.payload
+        }
       },
 
       removeFromCart: (state, action) => {
-        state.items = state.items.filter(item => item.productID !== action.payload)
+        delete state.items[action.payload]
       },
 
       updateCartTotal: (state, action) => {
@@ -76,7 +88,7 @@ export const getServerCart = createAsyncThunk('cart/getServerCart', async () => 
       },
 
       emptyCart: (state) => {
-        state.items = []
+        state.items = {}
       },
     },
     extraReducers: (builder) => {

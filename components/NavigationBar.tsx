@@ -20,7 +20,8 @@ const NavigationBar = ({routeName}: NavigationBarProps) => {
 
   const navigation = useNavigation<StackNavigationProp<UserStackParams>>()
   const dispatch = useAppDispatch()
-  const items = useAppSelector(state => state.cart.items)
+  const cart = useAppSelector(state => state.cart.items)
+	const items = Array.from(Object.values(cart))
   const cartTotal = eval(items.map(item => item['quantity']).join("+"))
   const cartOpen = useAppSelector(state => state.cart.openCart)
   const wishList = useAppSelector(state => state.wishlist.items)

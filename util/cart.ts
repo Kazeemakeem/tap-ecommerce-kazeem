@@ -11,11 +11,13 @@ const newCartData = {
   products: []
 }
 
+const token = getItem('tap').then(res => res).catch(err => console.log(err))
+
 export const createCloudCart = async () => {
   return axios.post('user/cart', {
     method: 'POST',
     headers: ({
-      'Authorization': `Bearer ${getItem('tap')}`,
+      'Authorization': `Bearer ${token}`,
       Accept: 'application/json',
       'Content-Type': 'application/json'
     }),

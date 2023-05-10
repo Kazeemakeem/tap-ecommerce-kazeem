@@ -29,9 +29,8 @@ const ProductCard = ({ _id, name, description, discount, price, rating }: Produc
 	const dispatch = useAppDispatch()
 	const [ wishlisted, setWishlisted ] = useState(false)
 	const [ quantity, setQuantity ] = useState(0)
-	const currentCartProducts = useAppSelector(state => state.cart.items)
-
-	
+	const cart = useAppSelector(state => state.cart.items)
+	const currentCartProducts = Array.from(Object.values(cart))
 
 	useEffect(() => {
 		wishListIds.includes(_id) ? setWishlisted(true) : setWishlisted(false)
@@ -46,7 +45,8 @@ const ProductCard = ({ _id, name, description, discount, price, rating }: Produc
 		return axios.put('user/cart', {
 			method: 'PUT',
 			headers: ({
-				'Authorization': `Bearer ${getItem('tap')}`,
+				
+				'Authorization': `Bearer ${token}`,
 				Accept: 'application/json',
 				'Content-Type': 'application/json'
 			}),
@@ -64,6 +64,8 @@ const ProductCard = ({ _id, name, description, discount, price, rating }: Produc
 		})
 	}
 
+	const token = getItem('tap').then(res => res).catch(err => console.log(err))
+	
 	const handleAddToCart = () => {
 		const newItem = {
 			productID: _id,
