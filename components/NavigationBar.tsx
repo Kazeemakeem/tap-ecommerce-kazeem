@@ -31,7 +31,7 @@ const NavigationBar = ({routeName}: NavigationBarProps) => {
 
     const cartLoader = () => {
       dispatch(toggleCart(!cartOpen))
-      // dispatch(getServerCart())
+      dispatch(getServerCart())
     }
 
     const handler = (text = "Home") => {
