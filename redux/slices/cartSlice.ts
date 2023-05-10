@@ -99,7 +99,12 @@ export const getServerCart = createAsyncThunk('cart/getServerCart', async () => 
       })
       builder.addCase(getServerCart.fulfilled, (state, action) => {
         if (state.loading === 'pending') {
-          state.items = action.payload
+          const productArr = action.payload.products
+          const productsObj = productArr.reduce((acc: {[key:string]: ShoppingCartItemType}, next: ShoppingCartItemType) => {
+            acc[next.productID] = next
+            return acc
+          }, {})
+          state.items = productsObj
           state.loading = 'idle'
         }
       })
