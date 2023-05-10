@@ -32,9 +32,7 @@ const CartContent = () => {
         {cartTotal && items.length ?
         <>
           <ScrollView className="flex mt-2 space-y-4 border-b-2 border-gray-200 pb-4 w-full px-6">
-            {/* the items mapping below is meant to be done at 'idle' state but now server returns empty arr of products,
-                so the pending state is used as a fall back to still load products stored in redux state*/}
-            { cart.loading === 'pending' &&
+            { cart.loading === 'idle' &&
             items.map(item => (
               <View key={item.productID} className="">
                 <CartItemBar _id={item.productID} price={item.totalPrice} name={item.name} quantity={item.quantity}/>

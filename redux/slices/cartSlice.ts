@@ -104,7 +104,8 @@ export const getServerCart = createAsyncThunk('cart/getServerCart', async () => 
             acc[next.productID] = next
             return acc
           }, {})
-          state.items = productsObj
+          //the execution is commented out because cart endpoint still returns empty arr of products currently
+          // state.items = productsObj
           state.loading = 'idle'
         }
       })
