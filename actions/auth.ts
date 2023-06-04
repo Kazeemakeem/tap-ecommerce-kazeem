@@ -1,5 +1,4 @@
 import * as SecureStore from "expo-secure-store"
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type dataType = {
   token: string
@@ -7,7 +6,7 @@ type dataType = {
 
 export const setItem = async (key: string, value: string) => {
   try {
-    await AsyncStorage.setItem(key, value)
+    await SecureStore.setItemAsync(key, value)
   } catch (e) {
     console.log(e)
   }
@@ -15,7 +14,7 @@ export const setItem = async (key: string, value: string) => {
 
 export const getItem = async (key: string) => {
   try {
-    const value = await AsyncStorage.getItem(key)
+    const value = await SecureStore.getItemAsync(key)
     if(value !== null) {
       return value
     }else{

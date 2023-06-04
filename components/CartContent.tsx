@@ -24,7 +24,7 @@ const CartContent = () => {
    <View className="w-full absolute px-3 bottom-20">
      {cartOpen && <View className="w-full shadow-lg shadow-black rounded-b-2xl pb-6 bg-white">
       <View className='border-b-2 border-t-2 border-gray-100 items-center flex-row justify-between pt-1 px-4'>
-        <Text className='flex font-bold h-10 text-2xl text-gray-600 items-center'>Cart</Text>
+        <Text testID='cart' className='flex font-bold h-10 text-2xl text-gray-600 items-center'>Cart</Text>
         <XMarkIcon size={24} color="gray"
         onPress={() => dispatch(toggleCart(!cartOpen))}/>
       </View>

@@ -14,8 +14,8 @@ const CurrencyBar = ({ description, value, emphasis }: currencyBarProps) => {
 
   return (
     <View className="flex-row justify-between mt-2">
-			<Text className={`${emphasis ? "font-extrabold" : "font-bold"} ${emphasis ? "text-xl" : "text-sm"} ${emphasis ? "" : "text-gray-400"}`}>{description}</Text>
-			<Text className={`${emphasis ? "font-extrabold" : "font-bold"} ${emphasis ? "text-xl" : "text-sm"} ${emphasis ? "" : "text-gray-400"}`}>
+			<Text testID='description' className={`${emphasis ? "font-extrabold" : "font-bold"} ${emphasis ? "text-xl" : "text-sm"} ${emphasis ? "" : "text-gray-400"}`}>{description}</Text>
+			<Text testID='amount' className={`${emphasis ? "font-extrabold" : "font-bold"} ${emphasis ? "text-xl" : "text-sm"} ${emphasis ? "" : "text-gray-400"}`}>
         {valueFormattedWithSymbol}
       </Text>
     </View>

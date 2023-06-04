@@ -1,26 +1,43 @@
-import React from 'react';
-import { shallow } from 'enzyme';
-import { ActionButton } from '../Button';
-import { TouchableOpacity } from 'react-native';
+import React from "react";
+import { TouchableOpacity, Text } from "react-native";
+import { render, fireEvent } from "@testing-library/react-native";
+import { Provider } from "react-redux";
+import configureStore from "redux-mock-store";
+import { ActionButton } from "../Button";
+import "@testing-library/jest-native/extend-expect";
 
+jest.mock(
+  "react-native/Libraries/Components/Touchable/TouchableOpacity.js",
+  () => {
+    const { View } = require("react-native");
+    const MockTouchable = (props: any) => {
+      return <View {...props} />;
+    };
 
-describe('ActionButton', () => {
-  it('renders correctly with narrow style', () => {
-    const onPressHandler = jest.fn();
-    const wrapper = shallow(<ActionButton text="Submit" onPressHandler={onPressHandler} isWide={false} />);
-    expect(wrapper).toMatchSnapshot();
-  });
+    MockTouchable.displayName = "TouchableOpacity";
 
-  it('renders correctly with wide style', () => {
-    const onPressHandler = jest.fn();
-    const wrapper = shallow(<ActionButton text="Cancel" onPressHandler={onPressHandler} isWide={true} />);
-    expect(wrapper).toMatchSnapshot();
-  });
+    return MockTouchable;
+  }
+);
 
-  it('calls onPressHandler when clicked', () => {
-    const onPressHandler = jest.fn();
-    const wrapper = shallow(<ActionButton text="Submit" onPressHandler={onPressHandler} isWide={false} />);
-    wrapper.find(TouchableOpacity).simulate('press');
+describe("ActionButton", () => {
+  const mockStore = configureStore([]);
+  const store = mockStore({});
+  const onPressHandler = jest.fn();
+
+  it("renders correctly with default props", () => {
+    const { getByTestId } = render(
+      <Provider store={store}>
+        <ActionButton
+          text="Press me"
+          onPressHandler={onPressHandler}
+          isWide={false}
+        />
+      </Provider>
+    );
+    const actionButton = getByTestId("action-button");
+    expect(actionButton).toBeOnTheScreen();
+    fireEvent.press(actionButton);
     expect(onPressHandler).toHaveBeenCalledTimes(1);
   });
 });
